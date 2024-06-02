@@ -1,18 +1,13 @@
 package main
 
 import (
-	web "ascii/pkg/AsciiWeb"
 	"log"
 	"net/http"
+
+	web "ascii/pkg/AsciiWeb"
 )
 
 func main() {
-	s := &http.Server{
-		Addr:    ":8080",
-		Handler: http.HandlerFunc(web.Web_Proc),
-		// ReadTimeout:  1000,
-		// WriteTimeout: 1000,
-	}
-
-	log.Fatal(s.ListenAndServe())
+	http.HandleFunc("/", web.Web_Proc)
+	log.Fatal(http.ListenAndServe(":8000", nil))
 }

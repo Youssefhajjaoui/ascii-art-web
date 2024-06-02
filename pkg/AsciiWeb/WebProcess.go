@@ -1,17 +1,26 @@
 package asciiweb
 
 import (
-	"fmt"
 	"net/http"
-	"text/template"
 )
 
 func Web_Proc(w http.ResponseWriter, r *http.Request) {
-	// MainWeb := ""
-	ErrWeb := "Error/index-err.html"
+	var tmplFile string
+	path := "../pkg/AsciiWeb/"
 	if r.URL.Path == "/" {
-		fmt.Fprintf(w, "Hello ROOT")
+		tmplFile = path + "index.html"
 	} else {
-		template.ParseFiles(ErrWeb)
+		tmplFile = path + "index-err.html"
 	}
+	http.ServeFile(w, r, tmplFile)
 }
+
+// var obj outil.Outils
+
+// obj.Args = append(obj.Args, r.FormValue("input"))
+// obj.Args = append(obj.Args, r.FormValue("banners"))
+
+// fmt.Println(obj.WordToChange)
+// fmt.Println(obj.Banner)
+
+// ascii.Process_Text(&obj)
