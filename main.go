@@ -9,11 +9,11 @@ import (
 
 func toget(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" {
-		http.Error(w, "PATH INALOWED", http.StatusNotFound)
+		handleerr(w, http.StatusNotFound, "path incorect", http.StatusText(http.StatusNotFound))
 		return
 	}
 	if r.Method != http.MethodGet {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		handleerr(w, http.StatusMethodNotAllowed, "path incorect", http.StatusText(http.StatusMethodNotAllowed))
 		return
 	}
 
@@ -36,7 +36,7 @@ func topost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if r.Method != http.MethodPost {
-		handleerr(w, http.StatusNotFound, "path incorect", http.StatusText(http.StatusNotFound))
+		handleerr(w, http.StatusMethodNotAllowed, "path incorect", http.StatusText(http.StatusMethodNotAllowed))
 		return
 	}
 	t, err := template.ParseFiles("index.html")
@@ -85,7 +85,7 @@ func handleerr(w http.ResponseWriter, statuscode int, message string, statustext
 		Statustext: statustext,
 		Statuscode: statuscode, // Corrected field name
 	}
-	fmt.Println(statustext)
+	w.WriteHeader(statuscode)
 	err = t.Execute(w, error)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
