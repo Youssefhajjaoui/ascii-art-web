@@ -4,7 +4,9 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
-	"strings"
+
+	process "web/Ascii"
+	"web/Outil"
 )
 
 func toget(w http.ResponseWriter, r *http.Request) {
@@ -16,7 +18,6 @@ func toget(w http.ResponseWriter, r *http.Request) {
 		handleerr(w, http.StatusMethodNotAllowed, "path incorect", http.StatusText(http.StatusMethodNotAllowed))
 		return
 	}
-
 	// Parse the index.html template
 	t, err := template.ParseFiles("index.html")
 	if err != nil {
@@ -31,6 +32,7 @@ func toget(w http.ResponseWriter, r *http.Request) {
 }
 
 func topost(w http.ResponseWriter, r *http.Request) {
+	myoutils := new(Outil.Outils)
 	if r.URL.Path != "/ascii-art" {
 		handleerr(w, http.StatusNotFound, "path incorect", http.StatusText(http.StatusNotFound))
 		return
@@ -45,18 +47,26 @@ func topost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	text := r.PostFormValue("text")
-	banner := r.PostFormValue("banner") // Adjust field name as needed
-	editedText := strings.ToUpper(text)
+	banner := r.PostFormValue("banner")
+	myoutils.WordToChange = text
+	myoutils.Banner = banner
+	if text == "" {
+		handleerr(w, http.StatusBadRequest, "string erreur", http.StatusText(http.StatusBadRequest))
+		return
+	}
+	process.Process_Text(myoutils)
+	if myoutils.Erreur != "" {
+		handleerr(w, http.StatusBadRequest, "string erreur", http.StatusText(http.StatusBadRequest))
+		return
+	}
 	type FormData struct {
 		Text   string
 		Banner string // Adjust field name as needed
 	}
 	formData := FormData{
-		Text:   editedText,
-		Banner: banner,
+		Text:   myoutils.Result,
+		Banner: myoutils.Banner,
 	}
-	fmt.Println("Received text:", banner)
-	// Execute the template with the edited text
 	err = t.Execute(w, formData)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)

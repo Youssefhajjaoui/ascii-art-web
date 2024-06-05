@@ -4,15 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ascii Art Web</title>
-    <link rel="icon" type="image/x-icon" href="images.png">
     <h1>
-        Ascii Art Web
+    Ascii Art Web
     </h1>
 </head>
 <body>
    <form method="post" action="/ascii-art" >
     <label>Set a banner </label>
-    <select name="banner">
+    <select name="banner" title="select a banner for your text">
         <option value="standard">standard</option>
         <option value="shadow">shadow</option>
         <option value="thinkertoy">thinkertoy</option>
@@ -20,10 +19,11 @@
     <label>Enter a string </label>
     <br><br><br><p>                                        </p>
     <textarea placeholder="Enter a string" name="text" cols="40" rows="12"></textarea>
-    <input type="submit" value="submit"> 
+    <input type="submit" value="submit" title="click here to submit your input"> 
 </form>
 <br><br><br>
-<p> {{ .Text }} </p>
-<p> {{  .Banner }} </p>
+
+<pre>{{.Text}}</pre>
+<p>{{  .Banner }} </p>
 </body>
 </html>
