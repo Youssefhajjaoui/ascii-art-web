@@ -19,7 +19,7 @@ func toget(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// Parse the index.html template
-	t, err := template.ParseFiles("index.html")
+	t, err := template.ParseFiles("style/index.html")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -41,7 +41,7 @@ func topost(w http.ResponseWriter, r *http.Request) {
 		handleerr(w, http.StatusMethodNotAllowed, "path incorect", http.StatusText(http.StatusMethodNotAllowed))
 		return
 	}
-	t, err := template.ParseFiles("index.html")
+	t, err := template.ParseFiles("style/index.html")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -81,7 +81,7 @@ func main() {
 }
 
 func handleerr(w http.ResponseWriter, statuscode int, message string, statustext string) {
-	t, err := template.ParseFiles("warningmsg.html")
+	t, err := template.ParseFiles("style/warningmsg.html")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
