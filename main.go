@@ -64,8 +64,7 @@ func topost(w http.ResponseWriter, r *http.Request) {
 		Banner string // Adjust field name as needed
 	}
 	formData := FormData{
-		Text:   myoutils.Result,
-		Banner: myoutils.Banner,
+		Text: myoutils.Result,
 	}
 	err = t.Execute(w, formData)
 	if err != nil {
@@ -89,11 +88,13 @@ func handleerr(w http.ResponseWriter, statuscode int, message string, statustext
 	}
 	type errors struct {
 		Statustext string
-		Statuscode int // Corrected field name
+		Statuscode int
+		Message    string // Corrected field name
 	}
 	error := errors{
 		Statustext: statustext,
-		Statuscode: statuscode, // Corrected field name
+		Statuscode: statuscode,
+		Message:    message,
 	}
 	w.WriteHeader(statuscode)
 	err = t.Execute(w, error)
@@ -101,5 +102,5 @@ func handleerr(w http.ResponseWriter, statuscode int, message string, statustext
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	http.Error(w, message, http.StatusInternalServerError)
+	// http.Error(w, message, http.StatusInternalServerError)
 }
