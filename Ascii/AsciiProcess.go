@@ -10,6 +10,7 @@ import (
 // Process_Text is the main function for processing the input text into ASCII art.
 func Process_Text(newOutils *outil.Outils) {
 	// The word to change is split by newline characters.
+	newOutils.WordToChange = strings.ReplaceAll(newOutils.WordToChange, `\r\n`, "\r\n")
 	newOutils.SplitedWord = strings.Split(newOutils.WordToChange, "\r\n")
 	// A map of ASCII art characters is created.
 	Make_Map(newOutils)
